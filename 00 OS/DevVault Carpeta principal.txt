@@ -1,0 +1,24 @@
+📁 DevVault/                    # Carpeta principal en tu Ubuntu
+└── 📁 RosettaBridge/           # Carpeta de este proyecto específico
+    │
+    ├── 📁 .vscode/             # Configuraciones del editor
+    │   └── 📄 tasks.json       # Tu script para compilar todos los lenguajes
+    │
+    ├── 📁 frontend/            # La interfaz WEB (HTML/JS/CSS o tu framework)
+    │   ├── 📁 assets/
+    │   └── 📄 index.html
+    │
+    ├── 📁 backend/             # Tu servidor en Node.js que controla la lógica
+    │   ├── 📄 server.js
+    │   └── 📄 package.json
+    │
+    ├── 📁 bridges/             # Scripts en Python que actúan como pegamento
+    │   └── 📄 data_parser.py
+    │
+    ├── 📁 engines/             # Tus programas en lenguajes compilados
+    │   ├── 📁 cobol_legacy/    # Archivos .cob y sus ejecutables
+    │   ├── 📁 cpp_core/        # Archivos .cpp de alto rendimiento
+    │   ├── 📁 fortran_math/    # Archivos .f90 para cálculos numéricos
+    │   └── 📁 java_services/   # Tus clases de Java (.java y .class)
+    │
+    └── 📄 Dockerfile           # (Opcional) Por si decides aislar todo después
