@@ -7,7 +7,7 @@ FILE="$1"
 DIR="${2}"
 NAME="${3}"
 
-OUT_DIR="/home/prolog/Desktop/01 DevVault_2026/bin"
+OUT_DIR="/home/prolog/Desktop/01 DevVault_2026/01 RosettaBridge/bin"
 mkdir -p "$OUT_DIR"
 
 case "$EXT" in
