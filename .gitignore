@@ -1,10 +1,3 @@
-bin/
-engines/**/hello
-engines/**/*.class
-engines/**/*.rs.d
-engines/**/*.o
-engines/**/*.hi
-engines/**/*.mod
-engines/**/*.exe
-node_modules/
-.DS_Store
+venv_web/
+__pycache__/
+*.pyc

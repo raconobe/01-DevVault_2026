@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Clínico - Registro de Pacientes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f9; color: #333; }
+        h1, h2 { color: #2c3e50; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        form input { display: block; margin-bottom: 10px; padding: 8px; width: 100%; max-width: 400px; box-sizing: border-box; }
+        form button { padding: 10px 15px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        form button:hover { background: #2980b9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #ecf0f1; }
+        .stats { font-weight: bold; color: #e67e22; }
+    </style>
+</head>
+<body>
+
+    <h1>Panel Clínico y Estadísticas</h1>
+
+    <!-- Tarjeta de Estadísticas (Calculadas con Pandas/NumPy) -->
+    <div class="card">
+        <h2>Estadísticas de Edad (Pandas & NumPy)</h2>
+        <p class="stats" id="stats-output">Cargando estadísticas...</p>
+    </div>
+
+    <!-- Formulario para Nuevo Registro -->
+    <div class="card">
+        <h2>Nuevo Registro de Paciente</h2>
+        <form id="record-form">
+            <input type="text" name="id" placeholder="ID / Cédula" required>
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="text" name="dire" placeholder="Dirección" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+            <input type="number" name="edad" placeholder="Edad (edad)" required>
+            <input type="number" step="any" name="colesterol" placeholder="Colesterol (mg/dL)" required>
+            <input type="number" step="any" name="glicemia" placeholder="Glicemia (mg/dL)" required>
+            <button type="submit">Guardar Registro</button>
+        </form>
+    </div>
+
+    <!-- Tabla de Registros -->
+    <div class="card">
+        <h2>Lista de Pacientes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>N° Rec</th>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Edad</th>
+                    <th>Colesterol</th>
+                    <th>Glicemia</th>
+                </tr>
+            </thead>
+            <tbody id="records-table-body">
+                <!-- Se llena con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Función para cargar los registros y las estadísticas al abrir la página
+        async function loadData() {
+            try {
+                // Cargar registros
+                const resRecords = await fetch('/api/records');
+                const records = await resRecords.json();
+                const tbody = document.getElementById('records-table-body');
+                tbody.innerHTML = '';
+                records.forEach(r => {
+                    tbody.innerHTML += `<tr>
+                        <td>${r.record_number}</td>
+                        <td>${r.id}</td>
+                        <td>${r.nombre}</td>
+                        <td>${r.dire}</td>
+                        <td>${r.telefono}</td>
+                        <td>${r.edad}</td>
+                        <td>${r.colesterol}</td>
+                        <td>${r.glicemia}</td>
+                    </tr>`;
+                });
+            } catch (err) {
+                console.error("Error cargando registros:", err);
+            }
+
+            try {
+                // Cargar estadísticas calculadas por Python de forma segura
+                const resStats = await fetch('/api/stats');
+                const stats = await resStats.json();
+                const avgVal = (stats && typeof stats.avg === 'number') ? stats.avg.toFixed(1) : '0.0';
+                const minVal = (stats && stats.min !== undefined) ? stats.min : 0;
+                const maxVal = (stats && stats.max !== undefined) ? stats.max : 0;
+                
+                document.getElementById('stats-output').innerText = 
+                    `Mínimo de edad: ${minVal} | Máximo de edad: ${maxVal} | Promedio de edad: ${avgVal} años`;
+            } catch (err) {
+                console.error("Error cargando estadísticas:", err);
+                document.getElementById('stats-output').innerText = "Error al cargar estadísticas";
+            }
+        }
+
+        // Manejar el envío del formulario
+        document.getElementById('record-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/api/records', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                e.target.reset();
+                loadData(); // Recargar datos y estadísticas
+            } else {
+                alert('Error al guardar el registro');
+            }
+        });
+
+        // Carga inicial
+        loadData();
+    </script>
+</body>
+</html>
