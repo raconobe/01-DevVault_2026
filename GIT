@@ -1,0 +1,53 @@
+cd "/home/prolog/Desktop/01 DevVault_2026/01 RosettaBridge"
+git init
+git add .gitignore
+git commit -m "chore: add .gitignore configuration"
+
+
+
+
+git config user.name "Raul"
+git config user.email "raconobe@gmail.com"
+
+git commit -m "chore: add .gitignore configuration"
+
+
+1.Check your status:See which files you modified or created:Bashgit status
+git status
+
+
+Add your modified files to the staging area (the . adds everything in the current directory, while respecting your .gitignore):
+Bash
+
+git add .
+
+
+3.Commit your changes:Save a permanent snapshot of your work with a clear message describing what you did:
+
+
+
+git commit -m "feat: describe what you worked on"
+
+
+
+Whenever you write new code, run git add . and git commit -m "..." and your local history will stay neat, clean, and completely up to date!
+
+
+
+
+
+git remote add origin https://github.com/raconobe/01 DevVault_2026.git
+
+
+
+cd "/home/prolog/Desktop/01 DevVault_2026"
+git remote add origin "https://github.com/raconobe/01 DevVault_2026"
+git branch -M main
+git push -u origin main
+
+
+
+
+
+
+
